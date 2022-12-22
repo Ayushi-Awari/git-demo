@@ -1,0 +1,30 @@
+http:
+  port: "8081"
+  
+american:
+  host: "module4-sandbox1.us-e2.cloudhub.io"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  client_id: "e2ff38878e94482a98e5275eb01e2fe7"
+  client_secret: "25516fcAe391402E80862e7EBEc8E78E"
+  
+training:
+  host: "mu.learn.mulesoft.com"
+  port: "80"
+  basepath: "/"
+
+delta:
+  wsdl: "http://mu.learn.mulesoft.com/delta?wsdl"
+  service: "TicketServiceService"
+  port: "TicketServicePort"
+  
+file:
+  accountsDir: "/Users/Ayushi.Awari/Downloads/APDevFundamentals4.4_studentFiles_SP_27jun2022/APDevFundamentals4.4_studentFiles_SP_27jun2022/resources"
+  
+db:
+  host: "mudb.learn.mulesoft.com"
+  port: "3306"
+  user: "mule"
+  password: "mule"
+  database: "training"

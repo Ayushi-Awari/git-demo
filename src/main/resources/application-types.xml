@@ -1,0 +1,738 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="flights_json" format="json">
+      <types:shape format="weave" example="flights-example.json"><![CDATA[%dw 2.0
+
+type flights_json = Array<{|  airline: String,   flightCode: String,   fromAirportCode: String,   toAirportCode: String,   departureDate: String,   emptySeats: Number {"typeId": "int"},   totalSeats: Number {"typeId": "int"},   price: Number {"typeId": "int"},   planeType: String|}> {"example": "[{\\\"airline\\\":\\\"United\\\",\\\"flightCode\\\":\\\"ER38sd\\\",\\\"fromAirportCode\\\":\\\"LAX\\\",\\\"toAirportCode\\\":\\\"SFO\\\",\\\"departureDate\\\":\\\"May 21, 2016\\\",\\\"emptySeats\\\":0,\\\"totalSeats\\\":200,\\\"price\\\":199,\\\"planeType\\\":\\\"Boeing 737\\\"},{\\\"airline\\\":\\\"Delta\\\",\\\"flightCode\\\":\\\"ER0945\\\",\\\"fromAirportCode\\\":\\\"PDX\\\",\\\"toAirportCode\\\":\\\"CLE\\\",\\\"departureDate\\\":\\\"June 1, 2016\\\",\\\"emptySeats\\\":24,\\\"totalSeats\\\":350,\\\"price\\\":450,\\\"planeType\\\":\\\"Boeing 747\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="flight_json" format="json">
+      <types:shape format="weave" example="flight-example.json"><![CDATA[%dw 2.0
+
+type flight_json = {|
+  airline: String, 
+  flightCode: String, 
+  fromAirportCode: String, 
+  toAirportCode: String, 
+  departureDate: String, 
+  emptySeats: Number {"typeId": "int"}, 
+  totalSeats: Number {"typeId": "int"}, 
+  price: Number {"typeId": "int"}, 
+  planeType: String
+|} {"example": "{\\\"airline\\\":\\\"United\\\",\\\"flightCode\\\":\\\"ER38sd\\\",\\\"fromAirportCode\\\":\\\"LAX\\\",\\\"toAirportCode\\\":\\\"SFO\\\",\\\"departureDate\\\":\\\"May 21, 2016\\\",\\\"emptySeats\\\":0,\\\"totalSeats\\\":200,\\\"price\\\":199,\\\"planeType\\\":\\\"Boeing 737\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="flights_xml" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}listAllFlightsResponse" location="flights-example.xml"/>
+    </types:type>
+    <types:type name="Flight_pojo" format="java">
+      <types:shape format="java" element="com.mulesoft.training.Flight"/>
+    </types:type>
+    <types:type name="united_flights_json" format="json">
+      <types:shape format="weave" example="united-flights-example.json"><![CDATA[%dw 2.0
+
+type united_flights_json = {|
+  flights: Array<{|    airlineName: String,     price: Number {"typeId": "double"},     departureDate: String,     planeType: String,     origin: String,     code: String,     emptySeats: Number {"typeId": "int"},     destination: String  |}>
+|} {"example": "{\\\"flights\\\":[{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":400.00,\\\"departureDate\\\":\\\"2015\\/03\\/20\\\",\\\"planeType\\\":\\\"Boeing 737\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER38sd\\\",\\\"emptySeats\\\":0,\\\"destination\\\":\\\"SFO\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":345.99,\\\"departureDate\\\":\\\"2015\\/02\\/11\\\",\\\"planeType\\\":\\\"Boeing 737\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER45if\\\",\\\"emptySeats\\\":52,\\\"destination\\\":\\\"LAX\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":346.00,\\\"departureDate\\\":\\\"2015\\/04\\/11\\\",\\\"planeType\\\":\\\"Boeing 777\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER45jd\\\",\\\"emptySeats\\\":12,\\\"destination\\\":\\\"LAX\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":423.00,\\\"departureDate\\\":\\\"2015\\/06\\/11\\\",\\\"planeType\\\":\\\"Boeing 707\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER0945\\\",\\\"emptySeats\\\":0,\\\"destination\\\":\\\"LAX\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":845.00,\\\"departureDate\\\":\\\"2015\\/07\\/11\\\",\\\"planeType\\\":\\\"Boeing 727\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER9fje\\\",\\\"emptySeats\\\":32,\\\"destination\\\":\\\"CLE\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":245.00,\\\"departureDate\\\":\\\"2015\\/08\\/11\\\",\\\"planeType\\\":\\\"Boeing 747\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER3kfd\\\",\\\"emptySeats\\\":13,\\\"destination\\\":\\\"CLE\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":945.00,\\\"departureDate\\\":\\\"2015\\/09\\/11\\\",\\\"planeType\\\":\\\"Boeing 757\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER39rk\\\",\\\"emptySeats\\\":54,\\\"destination\\\":\\\"SFO\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":954.00,\\\"departureDate\\\":\\\"2015\\/02\\/12\\\",\\\"planeType\\\":\\\"Boeing 777\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER39rj\\\",\\\"emptySeats\\\":23,\\\"destination\\\":\\\"SFO\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":234.00,\\\"departureDate\\\":\\\"2015\\/02\\/12\\\",\\\"planeType\\\":\\\"Boeing 787\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER95jf\\\",\\\"emptySeats\\\":23,\\\"destination\\\":\\\"PDF\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":853.00,\\\"departureDate\\\":\\\"2015\\/02\\/13\\\",\\\"planeType\\\":\\\"Boeing 777\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER49fd\\\",\\\"emptySeats\\\":0,\\\"destination\\\":\\\"PDX\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":483.00,\\\"departureDate\\\":\\\"2015\\/02\\/20\\\",\\\"planeType\\\":\\\"Boeing 777\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER95jf\\\",\\\"emptySeats\\\":95,\\\"destination\\\":\\\"PDX\\\"},{\\\"airlineName\\\":\\\"United\\\",\\\"price\\\":532.00,\\\"departureDate\\\":\\\"2015\\/02\\/12\\\",\\\"planeType\\\":\\\"Boeing 777\\\",\\\"origin\\\":\\\"MUA\\\",\\\"code\\\":\\\"ER04kf\\\",\\\"emptySeats\\\":30,\\\"destination\\\":\\\"PDX\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Input-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/9dca06e9-6a3d-4ef4-bc49-78a55a89baaf/Input-Payload.wev" autogeneratedOrigin="6123b650-9f81-4681-ac16-80aff1177fc3"><![CDATA[%dw 2.0
+
+type auto_9dca06e9_6a3d_4ef4_bc49_78a55a89baaf_Input_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_544fc7a4-123f-41db-9063-5e17649c912b_Input-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/544fc7a4-123f-41db-9063-5e17649c912b/Input-Payload.wev" autogeneratedOrigin="fbc9e6a9-c8c8-456a-a93b-eab014820f76"><![CDATA[%dw 2.0
+
+type auto_544fc7a4_123f_41db_9063_5e17649c912b_Input_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/9dca06e9-6a3d-4ef4-bc49-78a55a89baaf/Input-Attributes.wev" autogeneratedOrigin="6123b650-9f81-4681-ac16-80aff1177fc3"><![CDATA[%dw 2.0
+
+type auto_9dca06e9_6a3d_4ef4_bc49_78a55a89baaf_Input_Attributes = {|
+  listenerPath: String, 
+  rawRequestPath: String, 
+  relativePath: String, 
+  maskedRequestPath: String, 
+  version: String, 
+  scheme: String, 
+  method: String, 
+  requestUri: String, 
+  rawRequestUri: String, 
+  queryString: String, 
+  localAddress: String, 
+  remoteAddress: String, 
+  clientCertificate?: java_security_cert_Certificate, 
+  queryParams: { _?: String }, 
+  uriParams: { _?: String }, 
+  requestPath: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpRequestAttributes",
+"typeId": "org.mule.extension.http.api.HttpRequestAttributes"}
+type java_security_cert_Certificate = {|
+  encoded?: Binary, 
+  publicKey?: java_security_PublicKey, 
+  "type"?: String
+|} {"typeAlias": "Certificate",
+"typeId": "java.security.cert.Certificate"}
+type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
+"typeId": "java.security.PublicKey"}
+
+
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_544fc7a4-123f-41db-9063-5e17649c912b_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/544fc7a4-123f-41db-9063-5e17649c912b/Input-Attributes.wev" autogeneratedOrigin="fbc9e6a9-c8c8-456a-a93b-eab014820f76"><![CDATA[%dw 2.0
+
+type auto_544fc7a4_123f_41db_9063_5e17649c912b_Input_Attributes = {|
+  listenerPath: String, 
+  rawRequestPath: String, 
+  relativePath: String, 
+  maskedRequestPath: String, 
+  version: String, 
+  scheme: String, 
+  method: String, 
+  requestUri: String, 
+  rawRequestUri: String, 
+  queryString: String, 
+  localAddress: String, 
+  remoteAddress: String, 
+  clientCertificate?: java_security_cert_Certificate, 
+  queryParams: { _?: String }, 
+  uriParams: { _?: String }, 
+  requestPath: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpRequestAttributes",
+"typeId": "org.mule.extension.http.api.HttpRequestAttributes"}
+type java_security_cert_Certificate = {|
+  encoded?: Binary, 
+  publicKey?: java_security_PublicKey, 
+  "type"?: String
+|} {"typeAlias": "Certificate",
+"typeId": "java.security.cert.Certificate"}
+type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
+"typeId": "java.security.PublicKey"}
+
+
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/9dca06e9-6a3d-4ef4-bc49-78a55a89baaf/Output-Payload.wev" autogeneratedOrigin="6123b650-9f81-4681-ac16-80aff1177fc3"><![CDATA[%dw 2.0
+
+type auto_9dca06e9_6a3d_4ef4_bc49_78a55a89baaf_Output_Payload = Array<com_mulesoft_training_Flight>
+type com_mulesoft_training_Flight = {|
+  airlineName?: String, 
+  availableSeats?: Number, 
+  departureDate?: String, 
+  destination?: String, 
+  flightCode?: String, 
+  origination?: String, 
+  planeType?: String, 
+  price?: Number
+|} {"class": "com.mulesoft.training.Flight",
+"typeId": "com.mulesoft.training.Flight"}
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_544fc7a4-123f-41db-9063-5e17649c912b_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/544fc7a4-123f-41db-9063-5e17649c912b/Output-Payload.wev" autogeneratedOrigin="fbc9e6a9-c8c8-456a-a93b-eab014820f76"><![CDATA[%dw 2.0
+
+type auto_544fc7a4_123f_41db_9063_5e17649c912b_Output_Payload = Array<com_mulesoft_training_Flight>
+type com_mulesoft_training_Flight = {|
+  airlineName?: String, 
+  availableSeats?: Number, 
+  departureDate?: String, 
+  destination?: String, 
+  flightCode?: String, 
+  origination?: String, 
+  planeType?: String, 
+  price?: Number
+|} {"class": "com.mulesoft.training.Flight",
+"typeId": "com.mulesoft.training.Flight"}
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/9dca06e9-6a3d-4ef4-bc49-78a55a89baaf/Output-Attributes.wev" autogeneratedOrigin="6123b650-9f81-4681-ac16-80aff1177fc3"><![CDATA[%dw 2.0
+
+type auto_9dca06e9_6a3d_4ef4_bc49_78a55a89baaf_Output_Attributes = {|
+  headers?: { _?: String }, 
+  reasonPhrase?: String, 
+  statusCode?: Number
+|} {"typeId": "org.mule.extension.http.api.HttpResponseAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Input-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/623a1711-9dfa-459b-b284-f6fd1dc2a687/Input-Payload.wev" autogeneratedOrigin="cb2afaf0-95ea-49da-84d5-057288bcb928"><![CDATA[%dw 2.0
+
+type auto_623a1711_9dfa_459b_b284_f6fd1dc2a687_Input_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/623a1711-9dfa-459b-b284-f6fd1dc2a687/Input-Attributes.wev" autogeneratedOrigin="cb2afaf0-95ea-49da-84d5-057288bcb928"><![CDATA[%dw 2.0
+
+type auto_623a1711_9dfa_459b_b284_f6fd1dc2a687_Input_Attributes = {|
+  listenerPath: String, 
+  rawRequestPath: String, 
+  relativePath: String, 
+  maskedRequestPath: String, 
+  version: String, 
+  scheme: String, 
+  method: String, 
+  requestUri: String, 
+  rawRequestUri: String, 
+  queryString: String, 
+  localAddress: String, 
+  remoteAddress: String, 
+  clientCertificate?: java_security_cert_Certificate, 
+  queryParams: { _?: String }, 
+  uriParams: { _?: String }, 
+  requestPath: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpRequestAttributes",
+"typeId": "org.mule.extension.http.api.HttpRequestAttributes"}
+type java_security_cert_Certificate = {|
+  encoded?: Binary, 
+  publicKey?: java_security_PublicKey, 
+  "type"?: String
+|} {"typeAlias": "Certificate",
+"typeId": "java.security.cert.Certificate"}
+type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
+"typeId": "java.security.PublicKey"}
+
+
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/623a1711-9dfa-459b-b284-f6fd1dc2a687/Output-Payload.wev" autogeneratedOrigin="cb2afaf0-95ea-49da-84d5-057288bcb928"><![CDATA[%dw 2.0
+
+type auto_623a1711_9dfa_459b_b284_f6fd1dc2a687_Output_Payload = Array<com_mulesoft_training_Flight>
+type com_mulesoft_training_Flight = {|
+  airlineName?: String, 
+  availableSeats?: Number, 
+  departureDate?: String, 
+  destination?: String, 
+  flightCode?: String, 
+  origination?: String, 
+  planeType?: String, 
+  price?: Number
+|} {"class": "com.mulesoft.training.Flight",
+"typeId": "com.mulesoft.training.Flight"}
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/623a1711-9dfa-459b-b284-f6fd1dc2a687/Output-Attributes.wev" autogeneratedOrigin="cb2afaf0-95ea-49da-84d5-057288bcb928"><![CDATA[%dw 2.0
+
+type auto_623a1711_9dfa_459b_b284_f6fd1dc2a687_Output_Attributes = {|
+  protocolHeaders: { _?: String }, 
+  additionalTransportData: { _?: String }
+|} {"typeAlias": "SoapAttributes",
+"typeId": "org.mule.extension.ws.api.SoapAttributes"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Input-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/f6ad6cc3-1f62-474f-8051-721afe3d8674/Input-Payload.wev" autogeneratedOrigin="20bf1011-b4de-4630-9d22-29c8c1d52303"><![CDATA[%dw 2.0
+
+type auto_f6ad6cc3_1f62_474f_8051_721afe3d8674_Input_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/f6ad6cc3-1f62-474f-8051-721afe3d8674/Input-Attributes.wev" autogeneratedOrigin="20bf1011-b4de-4630-9d22-29c8c1d52303"><![CDATA[%dw 2.0
+
+type auto_f6ad6cc3_1f62_474f_8051_721afe3d8674_Input_Attributes = {|
+  listenerPath: String, 
+  rawRequestPath: String, 
+  relativePath: String, 
+  maskedRequestPath: String, 
+  version: String, 
+  scheme: String, 
+  method: String, 
+  requestUri: String, 
+  rawRequestUri: String, 
+  queryString: String, 
+  localAddress: String, 
+  remoteAddress: String, 
+  clientCertificate?: java_security_cert_Certificate, 
+  queryParams: { _?: String }, 
+  uriParams: { _?: String }, 
+  requestPath: String, 
+  headers: { _?: String }
+|} {"typeAlias": "HttpRequestAttributes",
+"typeId": "org.mule.extension.http.api.HttpRequestAttributes"}
+type java_security_cert_Certificate = {|
+  encoded?: Binary, 
+  publicKey?: java_security_PublicKey, 
+  "type"?: String
+|} {"typeAlias": "Certificate",
+"typeId": "java.security.cert.Certificate"}
+type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
+"typeId": "java.security.PublicKey"}
+
+
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Output-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/f6ad6cc3-1f62-474f-8051-721afe3d8674/Output-Payload.wev" autogeneratedOrigin="20bf1011-b4de-4630-9d22-29c8c1d52303"><![CDATA[%dw 2.0
+
+type auto_f6ad6cc3_1f62_474f_8051_721afe3d8674_Output_Payload = Array<com_mulesoft_training_Flight>
+type com_mulesoft_training_Flight = {|
+  airlineName?: String, 
+  availableSeats?: Number, 
+  departureDate?: String, 
+  destination?: String, 
+  flightCode?: String, 
+  origination?: String, 
+  planeType?: String, 
+  price?: Number
+|} {"class": "com.mulesoft.training.Flight",
+"typeId": "com.mulesoft.training.Flight"}
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/f6ad6cc3-1f62-474f-8051-721afe3d8674/Output-Attributes.wev" autogeneratedOrigin="20bf1011-b4de-4630-9d22-29c8c1d52303"><![CDATA[%dw 2.0
+
+type auto_f6ad6cc3_1f62_474f_8051_721afe3d8674_Output_Attributes = Null
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Payload" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Input-Payload.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Input_Payload = Any
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Input-Attributes.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    code?: "LAX" | "PDF" | "PDX" | "SFO" | "CLE", 
+    airline?: "united" | "delta" | "american"
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Input-Variables-outboundHeaders.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Input_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Payload" format="json">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Output-Payload.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Output_Payload = Array<{  flightCode: String,   price: Number,   ID?: Number,   departureDate: String,   airline: String,   fromAirportCode: String,   totalSeats?: Number,   planeType?: String,   toAirportCode: String,   emptySeats: Number,   _?: Any}>
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Output-Attributes.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Output_Attributes = Array<com_mulesoft_training_Flight> | Null | {|
+  protocolHeaders?: { _?: String }, 
+  statusCode?: Number, 
+  additionalTransportData?: { _?: String }, 
+  reasonPhrase?: String, 
+  headers?: { _?: String }
+|}
+type com_mulesoft_training_Flight = {|
+  airlineName?: String, 
+  availableSeats?: Number, 
+  departureDate?: String, 
+  destination?: String, 
+  flightCode?: String, 
+  origination?: String, 
+  planeType?: String, 
+  price?: Number
+|} {"class": "com.mulesoft.training.Flight",
+"typeId": "com.mulesoft.training.Flight"}
+
+
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-code" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Output-Variables-code.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Output_Variables_code = Null
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-airline" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Output-Variables-airline.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Output_Variables_airline = String | Null
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/e9de3e2e-c848-4303-9ed5-746b63d7eae8/Output-Variables-outboundHeaders.wev" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Output_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="cb561bb8-62c2-4369-9d99-0c3474041f9c"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Payload" format="json">
+      <types:shape format="weave" example="flight-example.json" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Input_Payload = {|
+  airline: String, 
+  flightCode: String, 
+  fromAirportCode: String, 
+  toAirportCode: String, 
+  departureDate: String, 
+  emptySeats: Number {"typeId": "int"}, 
+  totalSeats: Number {"typeId": "int"}, 
+  price: Number {"typeId": "int"}, 
+  planeType: String
+|} {"example": "{\\\"airline\\\":\\\"United\\\",\\\"flightCode\\\":\\\"ER38sd\\\",\\\"fromAirportCode\\\":\\\"LAX\\\",\\\"toAirportCode\\\":\\\"SFO\\\",\\\"departureDate\\\":\\\"May 21, 2016\\\",\\\"emptySeats\\\":0,\\\"totalSeats\\\":200,\\\"price\\\":199,\\\"planeType\\\":\\\"Boeing 737\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/1d7f1cbf-fd6a-471f-b9be-4fad4589f336/Input-Attributes.wev" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/1d7f1cbf-fd6a-471f-b9be-4fad4589f336/Input-Variables-outboundHeaders.wev" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Input_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Payload" format="json">
+      <types:shape format="weave" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Output_Payload = {| message?: String |} {"example": "{\\\"message\\\":\\\"Flight added (but not really)\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Attributes" format="java">
+      <types:shape format="weave" example="weave/autogenerated/1d7f1cbf-fd6a-471f-b9be-4fad4589f336/Output-Attributes.wev" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Output_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Variables-outboundHeaders" format="java">
+      <types:shape format="weave" example="weave/autogenerated/1d7f1cbf-fd6a-471f-b9be-4fad4589f336/Output-Variables-outboundHeaders.wev" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[%dw 2.0
+
+type auto_1d7f1cbf_fd6a_471f_b9be_4fad4589f336_Output_Variables_outboundHeaders = {|  |}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Variables-httpStatus" format="java">
+      <types:shape format="raml" autogeneratedOrigin="2d03534b-aed4-45ad-a1ec-8005603be132"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="accounts_json" format="json">
+      <types:shape format="weave" example="examples/accounts.json"><![CDATA[%dw 2.0
+
+type accounts_json = Array<{|  accountID: Number {"typeId": "int"},   country: String,   street: String,   state: String,   name: String,   city: String,   postal: String|}> {"example": "[{\\\"accountID\\\":5039,\\\"country\\\":\\\"United States\\\",\\\"street\\\":\\\"77 Geary Street\\\",\\\"state\\\":\\\"California\\\",\\\"name\\\":\\\"Maxine Mule\\\",\\\"city\\\":\\\"San Francisco\\\",\\\"postal\\\":\\\"94108\\\"},{\\\"accountID\\\":5043,\\\"country\\\":\\\"United States\\\",\\\"street\\\":\\\"77 Geary Street\\\",\\\"state\\\":\\\"California\\\",\\\"name\\\":\\\"Max Mule\\\",\\\"city\\\":\\\"San Francisco\\\",\\\"postal\\\":\\\"94108\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#b7d7f923-708b-41d2-ad7c-a62452b75122">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="united_flights_json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#796cead0-d52f-49c6-b557-8163c1317076">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c8767334-eddf-4fbc-9771-f41722a8f504">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#906af769-3dbb-44d9-a525-1b9d4a85afc2">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#9dca06e9-6a3d-4ef4-bc49-78a55a89baaf">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Input-Payload"/>
+          <types:attributes type="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Input-Attributes"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Output-Payload"/>
+          <types:attributes type="auto_9dca06e9-6a3d-4ef4-bc49-78a55a89baaf_Output-Attributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#544fc7a4-123f-41db-9063-5e17649c912b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_544fc7a4-123f-41db-9063-5e17649c912b_Input-Payload"/>
+          <types:attributes type="auto_544fc7a4-123f-41db-9063-5e17649c912b_Input-Attributes"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_544fc7a4-123f-41db-9063-5e17649c912b_Output-Payload"/>
+          <types:attributes type="Flight_pojo[]"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#623a1711-9dfa-459b-b284-f6fd1dc2a687">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Input-Payload"/>
+          <types:attributes type="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Input-Attributes"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Output-Payload"/>
+          <types:attributes type="auto_623a1711-9dfa-459b-b284-f6fd1dc2a687_Output-Attributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#0de12a8c-e477-4356-ac8a-eea6ff5e74e4">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="united_flights_json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f6ad6cc3-1f62-474f-8051-721afe3d8674">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Input-Payload"/>
+          <types:attributes type="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Input-Attributes"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Output-Payload"/>
+          <types:attributes type="auto_f6ad6cc3-1f62-474f-8051-721afe3d8674_Output-Attributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#e9de3e2e-c848-4303-9ed5-746b63d7eae8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Payload"/>
+          <types:attributes type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Variables-outboundHeaders"/>
+          <types:variable name="httpStatus" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Input-Variables-httpStatus"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Payload"/>
+          <types:attributes type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-outboundHeaders"/>
+          <types:variable name="code" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-code"/>
+          <types:variable name="httpStatus" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-httpStatus"/>
+          <types:variable name="airline" type="auto_e9de3e2e-c848-4303-9ed5-746b63d7eae8_Output-Variables-airline"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2d03534b-aed4-45ad-a1ec-8005603be132">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flight_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1d7f1cbf-fd6a-471f-b9be-4fad4589f336">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Payload"/>
+          <types:attributes type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Variables-outboundHeaders"/>
+          <types:variable name="httpStatus" type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Input-Variables-httpStatus"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Payload"/>
+          <types:attributes type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Attributes"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="outboundHeaders" type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Variables-outboundHeaders"/>
+          <types:variable name="httpStatus" type="auto_1d7f1cbf-fd6a-471f-b9be-4fad4589f336_Output-Variables-httpStatus"/>
+        </types:variables>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#a6d5c48c-b3e5-4c3e-90af-80eca18fafa7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f6a22281-b24c-44ed-85ad-df64c6043c85">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#97942c07-8897-4e1c-90c0-d17d8e98234a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="accounts_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

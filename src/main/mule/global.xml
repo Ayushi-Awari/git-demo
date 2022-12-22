@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:american-flights-api="http://www.mulesoft.org/schema/mule/american-flights-api" xmlns:demo="http://www.mulesoft.org/schema/mule/demo" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/demo http://www.mulesoft.org/schema/mule/demo/current/mule-demo.xsd
+http://www.mulesoft.org/schema/mule/american-flights-api http://www.mulesoft.org/schema/mule/american-flights-api/current/mule-american-flights-api.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="f0ac9f68-8cde-4197-8e96-8f4944a846ab" file="config.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="26e7ed93-95e7-4dfb-bfc3-2537c85612ef" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+		
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_config_training" doc:name="HTTP Request configuration" doc:id="825e5e7a-ed37-4f46-9682-ae3d43970bcb" basePath="/${training.basepath}" >
+		<http:request-connection host="${training.host}" port="${training.port}" />
+	</http:request-config>
+	<demo:config name="Demo_Config" doc:name="Demo Config" doc:id="2086398d-db7f-421a-a8bc-8b32b533dc4a" property_host="${american.host}" property_port="${american.port}" property_protocol="${american.protocol}" property_basePath="${american.basepath}" />
+	<wsc:config name="Delta_Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="2ad5fe59-99c3-44d0-84a9-6cf4c318e9c3" >
+		<wsc:connection wsdlLocation="${delta.wsdl}" service="${delta.service}" port="${delta.port}" >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
+	<configuration doc:name="Configuration" doc:id="a5f8f8e3-3563-463d-a6be-e905fdb54320" defaultErrorHandler-ref="globalError_Handler" />
+	<file:config name="File_Config" doc:name="File Config" doc:id="602bb9ca-c94f-464c-85e6-47903d17c990" >
+		<file:connection workingDir="${file.accountsDir}" />
+	</file:config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="2955a30f-6830-4d7c-8228-1bb51f165806" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
+	</db:config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="0d6ba3e9-7654-4d73-b2d2-a8fc1f1037ad" >
+		<jms:active-mq-connection specification="JMS_1_0_2b" >
+			<jms:factory-configuration />
+		</jms:active-mq-connection>
+	</jms:config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="7efb4e53-8259-47fc-88b8-7e558399f168" >
+		<salesforce:basic-connection username="ayushiawari@parkar.digital" password="Ayushi@50" securityToken="fF2eSs1gztKiODvJqYSeLt78"/>
+	</salesforce:sfdc-config>
+	<error-handler name="globalError_Handler" doc:id="b731bc0b-ac68-47c4-8a36-2b945bc63905" >
+	<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="78ac774f-bddc-4527-a9f0-852bad77f6a0" type="APP:INVALID_DESTINATION">
+				<ee:transform doc:name="error.description" doc:id="c27e385b-a9f4-440a-b561-390cb87d37ec">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="400" doc:name="httpStatus" doc:id="662b2dc2-2a18-47e3-8fa8-7722ab6ced80" variableName="httpStatus" />
+			</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="on-error-continue" doc:id="a7d9173c-6852-47e8-a8f6-ede18ccaaafb" type=" WSC:CONNECTIVITY, WSC:INVALID_WSDL">
+			<ee:transform doc:name="data unavailable" doc:id="1641cdbc-7833-4595-9a03-3413f3319c27" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Data unavailable. Try later" ++ error.description as String
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="c66ffbf6-e3ad-4c83-9c96-db2c4ad3d77b" variableName="httpStatus"/>
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="on-error-continue" doc:id="17d2df1a-4e85-4b91-b2b8-7fa51555704c" type="ANY">
+			<ee:transform doc:name="error.description" doc:id="3934e453-701c-4eab-bd33-062604d17d3e" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="a81eb1bd-3a67-426e-857e-c65e035430f3" variableName="httpStatus"/>
+		</on-error-continue>
+	</error-handler>
+</mule>

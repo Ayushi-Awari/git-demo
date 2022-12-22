@@ -1,0 +1,26 @@
+%dw 2.0
+
+type auto_e9de3e2e_c848_4303_9ed5_746b63d7eae8_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    code?: "LAX" | "PDF" | "PDX" | "SFO" | "CLE", 
+    airline?: "united" | "delta" | "american"
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
